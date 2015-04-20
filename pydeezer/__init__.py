@@ -1,3 +1,9 @@
+# -*- coding: utf-8 -*-
+
+import requests
+from urllib import urlencode
+
+
 """
 Deezer Python Client
 
@@ -8,9 +14,6 @@ TODO:
     * Error handling
     * Tokens refreshing
 """
-
-import requests
-from urllib import urlencode
 
 
 class DeezerClient(object):
