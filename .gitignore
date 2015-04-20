@@ -56,5 +56,8 @@ docs/_build/
 # PyBuilder
 target/
 
+# Emacs stuff
 *~
+#*
+
 *.sh
