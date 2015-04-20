@@ -34,7 +34,7 @@ class DeezerClient(object):
         params['request_method'] = method
         if base_url == self.base_url:
             params['access_token'] = self.access_token
-        url = base_url + "%s?%s" % (endpoint, urlencode(params))
+        url = base_url + "/%s" % endpoint
         result = requests.get(url, params=params)
         return result
 
