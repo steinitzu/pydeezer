@@ -13,20 +13,23 @@ import requests
 from urllib import urlencode
 
 
-BASE_URL = "https://api.deezer.com"
-BASE_AUTH_URL = "https://connect.deezer.com/oauth"
-REDIRECT_URI = "http://localhost:8000/services/deezer/auth" # should move this out
-
-
 class DeezerClient(object):
-    def __init__(self, application_key, secret_key):
+    def __init__(self, application_key, secret_key, base_url, base_auth_url, redirect_uri, perms=None):
+        # required at init
         self.application_key = application_key
         self.secret_key = secret_key
+        self.base_url = base_url
+        self.base_auth_url = base_auth_url
+        self.redirect_uri = redirect_uri
+        self.perms = perms
+
+        # not required
         self.access_token = None
+
 
     def _make_request(self, method, base_url, endpoint, params):
         params['request_method'] = method
-        if base_url == BASE_URL:
+        if base_url == self.base_url:
             params['access_token'] = self.access_token
         url = base_url + "%s?%s" % (endpoint, urlencode(params))
         result = requests.get(url, params=params)
@@ -38,10 +41,10 @@ class DeezerClient(object):
     def get_auth_url(self):
         params = {}
         params['app_id'] = self.application_key
-        params['redirect_uri'] = REDIRECT_URI
-        params['perms'] = "manage_library"
+        params['redirect_uri'] = self.redirect_uri
+        params['perms'] = "manage_library" # should not be 
         endpoint = '/auth'
-        return BASE_AUTH_URL + "%s?%s" % (endpoint, urlencode(params))
+        return self.base_auth_url + "%s?%s" % (endpoint, urlencode(params))
 
     def get_auth_token(self, code):
         params = {}
@@ -50,7 +53,7 @@ class DeezerClient(object):
         params['code'] = code
         result = self._make_request(
             method='GET',
-            base_url=BASE_AUTH_URL,
+            base_url=self.base_auth_url,
             endpoint='/access_token',
             params=params
         )
@@ -77,7 +80,7 @@ class DeezerClient(object):
         params['q'] = query
         result = self._make_request(
             method='GET',
-            base_url=BASE_URL,
+            base_url=self.base_url,
             endpoint='/search/track',
             params=params,
         )
@@ -90,7 +93,7 @@ class DeezerClient(object):
         params['title'] = title
         result = self._make_request(
             method='POST',
-            base_url=BASE_URL,
+            base_url=self.base_url,
             endpoint='/user/me/playlists',
             params=params,
         )
@@ -105,7 +108,7 @@ class DeezerClient(object):
         endpoint = '/playlist/%s/tracks' % playlist_id
         result = self._make_request(
             method='POST',
-            base_url=BASE_URL,
+            base_url=self.base_url,
             endpoint=endpoint,
             params=params,
         )
