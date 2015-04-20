@@ -42,7 +42,7 @@ class DeezerClient(object):
         params = {}
         params['app_id'] = self.application_key
         params['redirect_uri'] = self.redirect_uri
-        params['perms'] = "manage_library" # should not be 
+        params['perms'] = self.perms
         endpoint = '/auth'
         return self.base_auth_url + "%s?%s" % (endpoint, urlencode(params))
 
