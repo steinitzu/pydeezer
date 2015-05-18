@@ -76,10 +76,9 @@ class DeezerClient(object):
         return result
 
     """api endpoints"""
-    def search_track(self, query):
+    def search_track(self, query, params={}):
         """http://developers.deezer.com/api/search/track
         """
-        params = {}
         params['q'] = query
         result = self._make_request(
             method='GET',
@@ -87,6 +86,9 @@ class DeezerClient(object):
             endpoint='/search/track',
             params=params,
         )
+        result = result and result.json()
+        if not result:
+            return
         return result
 
     def playlist_create(self, title):
@@ -115,4 +117,14 @@ class DeezerClient(object):
             endpoint=endpoint,
             params=params,
         )
+        return result
+
+    def user_history(self):
+        result = self._make_request(
+            method='GET',
+            base_url=self.base_url,
+            endpoint='/user/me/history',
+            params={}
+        )
+        result = result.json()
         return result
