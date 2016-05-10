@@ -46,7 +46,7 @@ class DeezerClient(object):
         params['app_id'] = self.application_key
         params['redirect_uri'] = self.redirect_uri
         params['perms'] = self.perms
-        endpoint = '/auth'
+        endpoint = '/auth.php'
         return self.base_auth_url + "%s?%s" % (endpoint, urlencode(params))
 
     def get_auth_token(self, code):
@@ -57,7 +57,7 @@ class DeezerClient(object):
         result = self._make_request(
             method='GET',
             base_url=self.base_auth_url,
-            endpoint='/access_token',
+            endpoint='/access_token.php',
             params=params
         )
         auth_token_string = result.text
