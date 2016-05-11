@@ -10,7 +10,7 @@ Deezer Python Client
 Resources:
 http://developers.deezer.com/api
 
-TODO: 
+TODO:
     * Error handling
     * Tokens refreshing
 """
@@ -85,6 +85,19 @@ class DeezerClient(object):
             base_url=self.base_url,
             endpoint='/search/track',
             params=params,
+        )
+        result = result and result.json()
+        if not result:
+            return
+        return result
+
+    def get_track(self, query, params={}):
+        """http://developers.deezer.com/api/track/
+        """
+        result = self._make_request(
+            method='GET',
+            base_url=self.base_url,
+            endpoint="/track/%s" % query,
         )
         result = result and result.json()
         if not result:
