@@ -6,7 +6,7 @@ requires = [
 
 setup(
     name='pydeezer',
-    version='1.0.8',
+    version='1.0.9',
     description='A simple Python wrapper for Deezer\'s API',
     url='https://github.com/rcrdclub/pydeezer',
     author='Hery Ratsimihah',
