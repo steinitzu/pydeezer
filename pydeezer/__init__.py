@@ -30,7 +30,7 @@ class DeezerClient(object):
         self.access_token = None
 
 
-    def _make_request(self, method, base_url, endpoint, params):
+    def _make_request(self, method, base_url, endpoint, params={}):
         params['request_method'] = method
         if base_url == self.base_url:
             params['access_token'] = self.access_token
@@ -76,6 +76,15 @@ class DeezerClient(object):
         return result
 
     """api endpoints"""
+
+    def me(self):
+        result = self._make_request(
+            method='GET',
+            base_url=self.base_url,
+            endpoint='/user/me',
+        )
+        return result
+
     def search_track(self, query, params={}):
         """http://developers.deezer.com/api/search/track
         """
@@ -117,6 +126,16 @@ class DeezerClient(object):
         )
         return result
 
+    def playlist_info(self, playlist_id):
+        params = {}
+        endpoint = '/playlist/%s' % playlist_id
+        result = self._make_request(
+            method='GET',
+            base_url=self.base_url,
+            endpoint=endpoint,
+        )
+        return result
+
     def playlist_add_tracks(self, playlist_id, track_ids):
         """http://developers.deezer.com/api/track#actions
         """
@@ -126,6 +145,21 @@ class DeezerClient(object):
         endpoint = '/playlist/%s/tracks' % playlist_id
         result = self._make_request(
             method='POST',
+            base_url=self.base_url,
+            endpoint=endpoint,
+            params=params,
+        )
+        return result
+
+    def playlist_remove_tracks(self, playlist_id, track_ids):
+        """http://developers.deezer.com/api/track#actions
+        """
+        params = {}
+        track_ids = ",".join([str(track_id) for track_id in track_ids])
+        params['songs'] = track_ids
+        endpoint = '/playlist/%s/tracks' % playlist_id
+        result = self._make_request(
+            method='DELETE',
             base_url=self.base_url,
             endpoint=endpoint,
             params=params,
