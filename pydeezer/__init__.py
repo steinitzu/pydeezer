@@ -22,18 +22,19 @@ TODO:
 
 
 class DeezerClient(object):
-    def __init__(self, application_key, secret_key, base_url, base_auth_url, redirect_uri, perms=None):
+    def __init__(self, application_key, secret_key, redirect_uri,
+                 base_url=None, base_auth_url=None, perms=None):
         # required at init
         self.application_key = application_key
         self.secret_key = secret_key
-        self.base_url = base_url
-        self.base_auth_url = base_auth_url
         self.redirect_uri = redirect_uri
+        self.base_url = base_url or 'https://api.deezer.com'
+        self.base_auth_url = (base_auth_url or
+                              'https://connect.deezer.com/oauth')
         self.perms = perms
 
         # not required
         self.access_token = None
-
 
     def _make_request(self, method, base_url, endpoint, params={}):
         params['request_method'] = method
@@ -70,7 +71,7 @@ class DeezerClient(object):
         return auth_token
 
     def refresh_token(self):
-        pass
+        raise NotImplementedError
 
     def _parse_auth_token(self, auth_token_string):
         params = auth_token_string.split('&')
