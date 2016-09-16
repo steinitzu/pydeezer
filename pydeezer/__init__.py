@@ -1,7 +1,12 @@
 # -*- coding: utf-8 -*-
 
 import requests
-from urllib import urlencode
+try:
+    # Try for python 2.7
+    from urllib import urlencode
+except ImportError:
+    # Assume python 3
+    from urllib.parse import urlencode
 
 
 """
