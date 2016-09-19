@@ -23,7 +23,8 @@ TODO:
 
 class DeezerClient(object):
     def __init__(self, application_key, secret_key, redirect_uri,
-                 base_url=None, base_auth_url=None, perms=None):
+                 base_url=None, base_auth_url=None, perms=None,
+                 access_token=None):
         # required at init
         self.application_key = application_key
         self.secret_key = secret_key
@@ -34,7 +35,7 @@ class DeezerClient(object):
         self.perms = perms
 
         # not required
-        self.access_token = None
+        self.access_token = access_token
 
     def _make_request(self, method, base_url, endpoint, params={}):
         params['request_method'] = method
