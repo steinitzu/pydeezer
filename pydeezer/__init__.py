@@ -178,6 +178,14 @@ class DeezerClient(object):
         )
         return result
 
+    def playlist_delete(self, playlist_id):
+        endpoint = '/playlist/%s' % playlist_id
+        result = self._make_request(
+            method='DELETE',
+            base_url=self.base_url,
+            endpoint=endpoint)
+        return result
+
     def user_history(self):
         result = self._make_request(
             method='GET',
