@@ -24,7 +24,7 @@ TODO:
 class DeezerClient(object):
     def __init__(self, application_key, secret_key, redirect_uri,
                  base_url=None, base_auth_url=None, perms=None,
-                 access_token=None):
+                 access_token=None, requests_session=None):
         # required at init
         self.application_key = application_key
         self.secret_key = secret_key
@@ -37,12 +37,17 @@ class DeezerClient(object):
         # not required
         self.access_token = access_token
 
+        if requests_session:
+            self._session = requests_session
+        else:
+            self._session = requests.api
+
     def _make_request(self, method, base_url, endpoint, params={}):
         params['request_method'] = method
         if base_url == self.base_url:
             params['access_token'] = self.access_token
         url = base_url + "/%s" % endpoint
-        result = requests.get(url, params=params)
+        result = self._session.get(url, params=params)
         return result
 
     """Auth flow
