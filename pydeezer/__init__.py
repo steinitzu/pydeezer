@@ -186,6 +186,14 @@ class DeezerClient(object):
             endpoint=endpoint)
         return result
 
+    def user_playlists(self, user_id='me'):
+        endpoint = '/user/%s/playlists' % user_id
+        result = self._make_request(
+            'GET',
+            base_url=self.base_url,
+            endpoint=endpoint)
+        return result
+
     def user_history(self):
         result = self._make_request(
             method='GET',
